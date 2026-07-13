@@ -31,6 +31,27 @@ public class Library
         
         return $"Book '{book.Title}' added successfully with ID: {book.Id}";
     }
+    
+
+    public string AddMember(Member member)
+    {
+        if (_memberCount >= MaxMembers)
+        {
+            return "Cannot add more members. Maximum limit reached.";
+        }
+        member.Id = _nextMemberId++;
+        for (int i = 0; i < _members.Length; i++)
+        {
+            if (_members[i] == null)
+            {
+                _members[i] = member;
+                _memberCount++;
+                break;
+            }
+        }
+        
+        return $"Member '{member.Name}' added successfully with ID: {member.Id}";
+    }
 
 
 
