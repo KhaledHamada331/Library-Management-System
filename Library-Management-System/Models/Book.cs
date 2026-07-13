@@ -3,7 +3,12 @@ public class Book : LibraryItem, ISearchable
     public string Author { get; set; } = string.Empty;
     public int Year { get; set; }
     public string Genre { get; set; } = string.Empty;
-    public bool IsAvailable { get; set; } = true;
+    public bool IsAvailable { get; set; } 
+    public Book()
+    {
+        AddedDate = DateTime.Now;
+        IsAvailable = true;
+    }
 
     public override string GetInfo()
     {
