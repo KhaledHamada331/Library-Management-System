@@ -53,6 +53,67 @@ public class Library
         return $"Member '{member.Name}' added successfully with ID: {member.Id}";
     }
 
+    public string BorrowBook(int memberId, int bookId)
+    {
+        Book ?currentBook = null;
+        Member ?currentMember = null;
+        for (int i = 0; i < _books.Length; i++)
+        {
+            if (_books[i] != null && _books[i].Id == bookId)
+            {
+                currentBook = _books[i];
+                break;
+            }
+        }
+        if (currentBook == null)
+        {
+            return $"Book with ID {bookId} not found.";
+        } else if (currentBook.IsAvailable == false)
+        {
+            return $"Book '{currentBook.Title}' is already borrowed.";
+        }
+        foreach (var member in _members)
+        {
+            if (member != null && member.Id == memberId)
+            {
+                currentMember = member;
+                break;
+            }
+        }
+
+        if (currentMember == null)
+        {
+            return $"Member with ID {memberId} not found.";
+        }
+                if (_borrowRecordCount >= MaxBorrowRecords)
+        {
+            return "Cannot create more borrow records. Maximum limit reached.";
+        }
+   
+
+        for (int i = 0; i < currentMember.BorrowedBooks.Length; i++)
+        {
+            if (currentMember.BorrowedBooks[i] == null)
+            {
+                currentMember.BorrowedBooks[i] = currentBook;
+                break;
+            }
+            else if (i == currentMember.BorrowedBooks.Length - 1)
+            {
+                return $"Member '{currentMember.Name}' has reached the maximum borrowing limit.";
+            }
+        }
+     
+        BorrowRecord borrowRecord = new BorrowRecord
+        {
+            Id = _nextBorrowRecordId++,
+            Book = currentBook,
+            Member = currentMember,
+        };
+        _borrowRecords[_borrowRecordCount++] = borrowRecord;
+        currentBook.IsAvailable = false;
+        return $"Book '{currentBook.Title}' borrowed successfully by member '{currentMember.Name}'.";
+    }
 
 
 
