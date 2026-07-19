@@ -225,4 +225,31 @@ public class Library
         }
         return availableBooks;
     }
+
+    public BorrowRecord[] MemberBorrowHistory(int memberId)
+    {
+        int count = 0;
+        foreach (var borrowRecord in _borrowRecords)
+        {
+            if (borrowRecord != null && borrowRecord.Member.Id == memberId)
+            {
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            return Array.Empty<BorrowRecord>();
+        }
+        BorrowRecord[] records = new BorrowRecord[count];
+        int index = 0;
+        foreach (var borrowRecord in _borrowRecords)
+        {
+            if (borrowRecord != null && borrowRecord.Member.Id == memberId)
+            {
+                records[index++] = borrowRecord;
+            }
+        }
+
+        return records;
+    }
 }
