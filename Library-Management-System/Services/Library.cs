@@ -115,7 +115,35 @@ public class Library
         return $"Book '{currentBook.Title}' borrowed successfully by member '{currentMember.Name}'.";
     }
 
+    public string ReturnBook(int bookId)
+    {
+        foreach (BorrowRecord? borrowRecord in _borrowRecords)
+        {
+            if (borrowRecord != null && borrowRecord.Book.Id == bookId && borrowRecord.ReturnDate == null)
+            {
+                Member member = borrowRecord.Member;
+                for (int i = 0; i < member.BorrowedBooks.Length; i++)
+                {
+                    if (member.BorrowedBooks[i] != null && member.BorrowedBooks[i].Id == bookId)
+                    {
+                        member.BorrowedBooks[i] = null;
 
+                        break;
+                    }
+                }
+                borrowRecord.ReturnDate = DateTime.Now;
+                borrowRecord.Book.IsAvailable = true;
+                
+                
+                
+                return $"Book '{borrowRecord.Book.Title}' returned successfully by member '{borrowRecord.Member.Name}'.";
+            } 
+            
+
+        }
+
+        return $"Active borrow record for book with ID {bookId} not found.";
+    }
 
     
     
