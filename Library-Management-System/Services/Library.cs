@@ -28,10 +28,11 @@ public class Library
                 break;
             }
         }
-        
+
+
         return $"Book '{book.Title}' added successfully with ID: {book.Id}";
     }
-    
+
 
     public string AddMember(Member member)
     {
@@ -49,14 +50,14 @@ public class Library
                 break;
             }
         }
-        
+
         return $"Member '{member.Name}' added successfully with ID: {member.Id}";
     }
 
     public string BorrowBook(int memberId, int bookId)
     {
-        Book ?currentBook = null;
-        Member ?currentMember = null;
+        Book? currentBook = null;
+        Member? currentMember = null;
         for (int i = 0; i < _books.Length; i++)
         {
             if (_books[i] != null && _books[i].Id == bookId)
@@ -68,7 +69,8 @@ public class Library
         if (currentBook == null)
         {
             return $"Book with ID {bookId} not found.";
-        } else if (currentBook.IsAvailable == false)
+        }
+        else if (currentBook.IsAvailable == false)
         {
             return $"Book '{currentBook.Title}' is already borrowed.";
         }
@@ -85,11 +87,11 @@ public class Library
         {
             return $"Member with ID {memberId} not found.";
         }
-                if (_borrowRecordCount >= MaxBorrowRecords)
+        if (_borrowRecordCount >= MaxBorrowRecords)
         {
             return "Cannot create more borrow records. Maximum limit reached.";
         }
-   
+
 
         for (int i = 0; i < currentMember.BorrowedBooks.Length; i++)
         {
@@ -103,7 +105,7 @@ public class Library
                 return $"Member '{currentMember.Name}' has reached the maximum borrowing limit.";
             }
         }
-     
+
         BorrowRecord borrowRecord = new BorrowRecord
         {
             Id = _nextBorrowRecordId++,
@@ -133,12 +135,12 @@ public class Library
                 }
                 borrowRecord.ReturnDate = DateTime.Now;
                 borrowRecord.Book.IsAvailable = true;
-                
-                
-                
+
+
+
                 return $"Book '{borrowRecord.Book.Title}' returned successfully by member '{borrowRecord.Member.Name}'.";
-            } 
-            
+            }
+
 
         }
 
@@ -170,7 +172,7 @@ public class Library
             }
         }
 
-        return  allBooks;   
+        return allBooks;
     }
     public Member[] SearchMembers(string query)
     {
@@ -193,11 +195,11 @@ public class Library
             if (member != null && member.MatchesQuery(query))
             {
                 allMembers[index++] = member;
-                
+
             }
         }
 
-        return  allMembers;   
+        return allMembers;
     }
 
     public Book[] AvailableBooks()
@@ -278,5 +280,46 @@ public class Library
         }
 
         return lateRecords;
+    }
+
+    public void SeedData()
+    {
+        AddBook(new Book
+        {
+            Title = "Clean Code",
+            Author = "Robert C. Martin",
+            Year = 2008,
+            Genre = "Programming"
+        });
+
+        AddBook(new Book
+        {
+            Title = "The Pragmatic Programmer",
+            Author = "Andrew Hunt",
+            Year = 1999,
+            Genre = "Programming"
+        });
+
+        AddBook(new Book
+        {
+            Title = "Atomic Habits",
+            Author = "James Clear",
+            Year = 2018,
+            Genre = "Self Development"
+        });
+
+        AddMember(new Member
+        {
+            Name = "Ahmed Ali",
+            Email = "ahmed@gmail.com"
+        });
+
+        AddMember(new PremiumMember
+        {
+            Name = "Sara Mohamed",
+            Email = "sara@gmail.com"
+        });
+
+        BorrowBook(1, 1);
     }
 }
