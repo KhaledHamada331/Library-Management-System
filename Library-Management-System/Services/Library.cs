@@ -200,5 +200,29 @@ public class Library
         return  allMembers;   
     }
 
-
+    public Book[] AvailableBooks()
+    {
+        int count = 0;
+        foreach (var book in _books)
+        {
+            if (book != null && book.IsAvailable)
+            {
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            return Array.Empty<Book>();
+        }
+        Book[] availableBooks = new Book[count];
+        int index = 0;
+        for (int i = 0; i < _books.Length; i++)
+        {
+            if (_books[i] != null && _books[i].IsAvailable)
+            {
+                availableBooks[index++] = _books[i];
+            }
+        }
+        return availableBooks;
+    }
 }
