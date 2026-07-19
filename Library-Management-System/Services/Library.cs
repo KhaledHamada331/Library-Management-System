@@ -145,6 +145,31 @@ public class Library
         return $"Active borrow record for book with ID {bookId} not found.";
     }
 
-    
-    
+    public Book[] SearchBooks(string query)
+    {
+        int count = 0;
+        for (int i = 0; i < _books.Length; i++)
+        {
+            if (_books[i] != null && _books[i].MatchesQuery(query))
+            {
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            return Array.Empty<Book>();
+        }
+        Book[] allBooks = new Book[count];
+        int index = 0;
+        foreach (var book in _books)
+        {
+            if (book != null && book.MatchesQuery(query))
+            {
+                allBooks[index] = book;
+                index++;
+            }
+        }
+
+        return  allBooks;   
+    }
 }
