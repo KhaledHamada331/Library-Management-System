@@ -172,4 +172,33 @@ public class Library
 
         return  allBooks;   
     }
+    public Member[] SearchMembers(string query)
+    {
+        int count = 0;
+        for (int i = 0; i < _members.Length; i++)
+        {
+            if (_members[i] != null && _members[i].MatchesQuery(query))
+            {
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            return Array.Empty<Member>();
+        }
+        Member[] allMembers = new Member[count];
+        int index = 0;
+        foreach (var member in _members)
+        {
+            if (member != null && member.MatchesQuery(query))
+            {
+                allMembers[index++] = member;
+                
+            }
+        }
+
+        return  allMembers;   
+    }
+
+
 }
