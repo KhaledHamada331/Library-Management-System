@@ -7,6 +7,7 @@ public class Program
     {
         int input = -1;
         Library library = new Library();
+        library.SeedData();
         do
         {
             DisplayMenu();
