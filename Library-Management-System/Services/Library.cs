@@ -252,4 +252,31 @@ public class Library
 
         return records;
     }
+
+    public BorrowRecord[] LateReturns()
+    {
+        int count = 0;
+        foreach (var borrowRecord in _borrowRecords)
+        {
+            if (borrowRecord != null && borrowRecord.IsLate())
+            {
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            return Array.Empty<BorrowRecord>();
+        }
+        BorrowRecord[] lateRecords = new BorrowRecord[count];
+        int index = 0;
+        foreach (var borrowRecord in _borrowRecords)
+        {
+            if (borrowRecord != null && borrowRecord.IsLate())
+            {
+                lateRecords[index++] = borrowRecord;
+            }
+        }
+
+        return lateRecords;
+    }
 }
